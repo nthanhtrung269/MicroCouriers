@@ -65,50 +65,64 @@ namespace OrderShipping
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Thanks!");
+            //MessageBox.Show("Thanks!");
         }
 
         private void btn_UpdateStatus_Click(object sender, EventArgs e)
         {
-            if (cmbOrderStatus.Text.ToLower().Contains("picked"))
+            lblStatus.Text = "Please Wait !";
+            try
             {
-                var orderPicked = new OrderPickedIntegrationEvent(txtBookingID.Text, txtDesc.Text);
-                Publish(orderPicked);
-            }
+                if (cmbOrderStatus.Text.ToLower().Contains("picked"))
+                {
+                    var orderPicked = new OrderPickedIntegrationEvent(txtBookingID.Text, txtDesc.Text);
+                    Publish(orderPicked);
+                }
 
-            if (cmbOrderStatus.Text.ToLower().Contains("transit"))
+                if (cmbOrderStatus.Text.ToLower().Contains("transit"))
+                {
+                    var orderPicked = new OrderTransitIntegrationEvent(txtBookingID.Text, txtDesc.Text);
+                    Publish(orderPicked);
+                }
+
+
+                if (cmbOrderStatus.Text.ToLower().Contains("delivered"))
+                {
+                    var orderPicked = new OrderDeliveredIntegrationEvent(txtBookingID.Text, txtDesc.Text, txtSignedBy.Text);
+                    Publish(orderPicked);
+                }
+
+                lblStatus.Text = "Order Updated";
+
+            }
+            catch(Exception ex)
             {
-                var orderPicked = new OrderTransitIntegrationEvent(txtBookingID.Text, txtDesc.Text);
-                Publish(orderPicked);
+                lblStatus.Text = "Some Problem " + ex.Message;
             }
-
-
-            if (cmbOrderStatus.Text.ToLower().Contains("delivered"))
-            {
-                var orderPicked = new OrderDeliveredIntegrationEvent(txtBookingID.Text, txtDesc.Text,"");
-                Publish(orderPicked);
-            }
+           
         }
 
         private void btn_getBooking_Click(object sender, EventArgs e)
         {
+            lblStatus.Text = "Please Wait !";
             try
             {
                 var bookingID = txtBookingID.Text;
                 string URL = "http://localhost:5002/api/tracking/" + bookingID;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
-                request.ContentType = "application/json; charset=utf-8";
-                //request.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes("username:password"));
-                // request.PreAuthenticate = true;
+                request.ContentType = "application/json; charset=utf-8";                
                 HttpWebResponse response = request.GetResponse() as HttpWebResponse;
                 using (Stream responseStream = response.GetResponseStream())
                 {
                     StreamReader reader = new StreamReader(responseStream, Encoding.UTF8);
                     // Console.WriteLine();
                     txtBooingStatus.Text = reader.ReadToEnd();
+                    //lblStatus.Text = "Order Updated";
                 }
             }
-            catch(Exception ex) { }
+            catch(Exception ex) {
+                lblStatus.Text = "Some Problem " + ex.Message;
+            }
         }
     }
 }
