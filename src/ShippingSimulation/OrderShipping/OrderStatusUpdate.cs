@@ -124,5 +124,10 @@ namespace OrderShipping
                 lblStatus.Text = "Some Problem " + ex.Message;
             }
         }
+
+        private void Shipping_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
