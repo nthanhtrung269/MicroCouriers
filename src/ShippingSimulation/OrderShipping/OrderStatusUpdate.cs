@@ -1,17 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
-using Microsoft.MicroCouriers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.MicroCouriers.BuildingBlocks.EventBus.Events;
 using Newtonsoft.Json;
 using OrderShipping.Events;
@@ -25,6 +15,8 @@ namespace OrderShipping
 {
     public partial class Shipping : Form
     {
+        //We will use this app to simulate the Order Progression
+        //e.g. if order is moved from booking to Order picked or order in transit
         const string ServiceBusConnectionString = "Endpoint=sb://msservice.servicebus.windows.net/;SharedAccessKeyName=microcouriers;SharedAccessKey=/gJo67YbuO0Wp/xUhFg=";
         const string TopicName = "microcouriers-topic";
         static ITopicClient topicClient;       
@@ -36,13 +28,8 @@ namespace OrderShipping
             topicClient = new TopicClient(ServiceBusConnectionString, TopicName);        
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            // Click on the link below to continue learning how to build a desktop app using WinForms!
-            System.Diagnostics.Process.Start("http://aka.ms/dotnet-get-started-desktop");
 
-        }
-
+        //Events are published
         public void Publish(IntegrationEvent @event)
         {
             var eventName = @event.GetType().Name.Replace(INTEGRATION_EVENT_SUFIX, "");
@@ -63,11 +50,8 @@ namespace OrderShipping
                 .GetResult();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //MessageBox.Show("Thanks!");
-        }
 
+        //Update the order status
         private void btn_UpdateStatus_Click(object sender, EventArgs e)
         {
             lblStatus.Text = "Please Wait !";
@@ -102,6 +86,7 @@ namespace OrderShipping
            
         }
 
+        //Get order history
         private void btn_getBooking_Click(object sender, EventArgs e)
         {
             lblStatus.Text = "Please Wait !";
@@ -114,10 +99,8 @@ namespace OrderShipping
                 HttpWebResponse response = request.GetResponse() as HttpWebResponse;
                 using (Stream responseStream = response.GetResponseStream())
                 {
-                    StreamReader reader = new StreamReader(responseStream, Encoding.UTF8);
-                    // Console.WriteLine();
-                    txtBooingStatus.Text = reader.ReadToEnd();
-                    //lblStatus.Text = "Order Updated";
+                    StreamReader reader = new StreamReader(responseStream, Encoding.UTF8);                 
+                    txtBooingStatus.Text = reader.ReadToEnd();                  
                 }
             }
             catch(Exception ex) {
@@ -128,6 +111,16 @@ namespace OrderShipping
         private void Shipping_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+             
         }
     }
 }
