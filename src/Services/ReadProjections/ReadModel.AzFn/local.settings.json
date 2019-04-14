@@ -1,9 +1,9 @@
 {
   "IsEncrypted": false,
   "Values": {
-    "ServiceBus": "Endpoint=sb://msservice.servicebus.windows.net/;SharedAccessKeyName=microcouriers;SharedAccessKey=/gJo67YbuO0Wp/xUhFg=",
+    "ServiceBus": "Endpoint=sb://msservice.servicebus.windows.net/;SharedAccessKeyName=microcouriers;SharedAccessKey=NNMTfCD3v3Gr73KAzca3tObJ/gJo67YbuO0Wp/xUhFg=",
     "AzureWebJobsStorage": "UseDevelopmentStorage=false",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",   
-    "REDIS": ""
+    "REDIS": "microcouriers.redis.cache.windows.net:6380,password=CZ4mp5DmudNQbpPV04NeAaomqxtL8EZi1Q9715neBN0=,ssl=True,abortConnect=False"
   }
 }
