@@ -17,7 +17,7 @@ namespace OrderShipping
     {
         //We will use this app to simulate the Order Progression
         //e.g. if order is moved from booking to Order picked or order in transit
-        const string ServiceBusConnectionString = "Endpoint=sb://msservice.servicebus.windows.net/;SharedAccessKeyName=microcouriers;SharedAccessKey=/gJo67YbuO0Wp/xUhFg=";
+        const string ServiceBusConnectionString = "Endpoint=sb://msservice.servicebus.windows.net/;SharedAccessKeyName=microcouriers;SharedAccessKey=NNMTfCD3v3Gr73KAzca3tObJ/gJo67YbuO0Wp/xUhFg=";
         const string TopicName = "microcouriers-topic";
         static ITopicClient topicClient;       
         private const string INTEGRATION_EVENT_SUFIX = "IntegrationEvent";
@@ -84,28 +84,6 @@ namespace OrderShipping
                 lblStatus.Text = "Some Problem " + ex.Message;
             }
            
-        }
-
-        //Get order history
-        private void btn_getBooking_Click(object sender, EventArgs e)
-        {
-            lblStatus.Text = "Please Wait !";
-            try
-            {
-                var bookingID = txtBookingID.Text;
-                string URL = "http://localhost:5002/api/tracking/" + bookingID;
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
-                request.ContentType = "application/json; charset=utf-8";                
-                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
-                using (Stream responseStream = response.GetResponseStream())
-                {
-                    StreamReader reader = new StreamReader(responseStream, Encoding.UTF8);                 
-                    txtBooingStatus.Text = reader.ReadToEnd();                  
-                }
-            }
-            catch(Exception ex) {
-                lblStatus.Text = "Some Problem " + ex.Message;
-            }
         }
 
         private void Shipping_Load(object sender, EventArgs e)
